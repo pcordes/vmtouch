@@ -10,7 +10,7 @@ Compilation:
 
 ************************************************************************
 
-Copyright (c) 2009-2015 Doug Hoyte and contributors. All rights reserved.
+Copyright (c) 2009-2016 Doug Hoyte and contributors. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions
@@ -75,6 +75,7 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <dirent.h>
 #include <errno.h>
 #include <fcntl.h>
+#include <math.h>
 #include <search.h>
 
 /*
@@ -275,9 +276,13 @@ int64_t parse_size(char *inp) {
 
   val = strtod(inp, &tp);
 
-  if (val <= 0 || *tp != '\0') fatal(errstr);
+  if (val < 0 || val == HUGE_VAL || *tp != '\0') fatal(errstr);
 
-  return (int64_t) (mult*val);
+  val *= mult;
+
+  if (val > INT64_MAX) fatal(errstr);
+
+  return (int64_t) val;
 }
 
 int64_t bytes2pages(int64_t bytes) {
@@ -305,7 +310,7 @@ void parse_range(char *inp) {
   }
 
   // offset must be multiple of pagesize
-  offset = bytes2pages(lower_range) * pagesize;
+  offset = (lower_range / pagesize) * pagesize;
 
   if (upper_range) {
     if (upper_range <= offset) fatal("range limits out of order");

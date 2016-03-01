@@ -16,8 +16,8 @@ vmtouch is a tool for learning about and controlling the file system cache of un
 
 ### More information
 
-* [Official Website](http://hoytech.com/vmtouch/)
+* [Official Website](https://hoytech.com/vmtouch/)
 * [Online manual](https://github.com/hoytech/vmtouch/blob/master/vmtouch.pod)
 
 
-vmtouch is copyright (c) 2009-2015 Doug Hoyte and contributors.
+vmtouch is copyright (c) 2009-2016 Doug Hoyte and contributors.
